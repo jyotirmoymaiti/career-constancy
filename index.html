@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CareerPath — Smart Stream & Learning Guide</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app" role="application" aria-label="CareerPath app">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" aria-hidden="false">
+        <div class="brand">
+          <div class="logo">CP</div>
+          <div>
+            <h1 class="app-title">CareerPath</h1>
+            <p class="app-sub">Personalized stream & learning guidance</p>
+          </div>
+        </div>
+        <!-- PROFILE (will be populated after login) -->
+        <div id="profileArea" class="profile" style="display: none">
+          <img
+            id="profileImage"
+            src=""
+            alt="profile photo"
+            width="56"
+            height="56"
+          />
+          <div class="meta">
+            <div class="name" id="profileName">Student Name</div>
+            <div class="email" id="profileEmail">student@example.com</div>
+            <div id="profileStream" class="muted" style="margin-top: 6px"></div>
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" aria-hidden="true">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="step-list" id="stepList">
+            <div class="step-item">
+              <div class="step-badge" data-step="1">1</div>
+              <div class="muted">Login</div>
+            </div>
+            <div class="step-item">
+              <div class="step-badge" data-step="2">2</div>
+              <div class="muted">Stream & Subjects</div>
+            </div>
+            <div class="step-item">
+              <div class="step-badge" data-step="3">3</div>
+              <div class="muted">Interests</div>
+            </div>
+            <div class="step-item">
+              <div class="step-badge" data-step="4">4</div>
+              <div class="muted">Career Goals</div>
+            </div>
+            <div class="step-item">
+              <div class="step-badge" data-step="5">5</div>
+              <div class="muted">Recommendations</div>
+            </div>
+            <div class="step-item">
+              <div class="step-badge" data-step="6">6</div>
+              <div class="muted">Stream Details</div>
+            </div>
+            <div class="step-item">
+              <div class="step-badge" data-step="7">7</div>
+              <div class="muted">Learning Path</div>
+            </div>
+          </div>
+        </div>
+        <!-- footer note removed per request -->
+      </aside>
+      <!-- MAIN -->
+      <main class="main" id="main">
+        <!-- STEP 1 -->
+        <section class="step-screen active" id="screen-1">
+          <h2>Welcome back — sign in</h2>
+          <div class="card">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@school.edu"
+              autocomplete="email"
+            />
+            <label for="password" style="margin-top: 12px">Password</label>
+            <div style="display: flex; gap: 8px">
+              <input
+                id="password"
+                type="password"
+                placeholder="Minimum 8 characters"
+              />
+              <button
+                id="togglePwd"
+                class="btn secondary small"
+                onclick="togglePassword()"
+              >
+                Show
+              </button>
+            </div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-top: 10px;
+              "
+            >
+              <input id="remember" type="checkbox" />
+              <label for="remember" class="muted" style="margin: 0"
+                >Remember this device</label
+              >
+            </div>
+            <div style="display: flex; gap: 12px; margin-top: 14px">
+              <button class="btn" id="signInBtn" onclick="handleLogin()">
+                Sign in
+              </button>
+              <button class="btn secondary" onclick="fillTestAccount()">
+                Use demo
+              </button>
+            </div>
+            <p class="muted" style="margin-top: 12px; font-size: 13px">
+              Password must be at least 8 characters and contain a number. This
+              demo stores no real credentials — it simulates sign-in locally.
+            </p>
+          </div>
+        </section>
+        <!-- STEP 2 -->
+        <section class="step-screen" id="screen-2" aria-hidden="true">
+          <h2>Step 1 — Choose your 12th stream & subjects</h2>
+          <div class="card">
+            <label for="streamSelect">Select stream</label>
+            <select id="streamSelect" onchange="onStreamChange()">
+              <option value="">— Choose stream —</option>
+              <option value="science">Science</option>
+              <option value="commerce">Commerce</option>
+              <option value="arts">Arts</option>
+            </select>
+            <div style="margin-top: 14px">
+              <label
+                >Choose subjects —
+                <span class="muted">minimum 4, maximum 5</span></label
+              >
+              <div id="subjectGrid" class="grid" style="margin-top: 8px"></div>
+              <p id="subjectHint" class="muted" style="margin-top: 8px">
+                Select subjects after choosing stream.
+              </p>
+            </div>
+            <div class="actions" style="margin-top: 12px">
+              <button class="btn secondary" onclick="goTo(1)">Back</button>
+              <button class="btn" onclick="validateSubjects()">Next</button>
+            </div>
+          </div>
+        </section>
+        <!-- STEP 3 -->
+        <section class="step-screen" id="screen-3" aria-hidden="true">
+          <h2>Step 2 — Tell us what you enjoy</h2>
+          <div class="card">
+            <label class="muted">Search interests</label>
+            <input
+              id="interestSearch"
+              type="text"
+              placeholder="e.g., coding, robotics, design"
+              oninput="filterInterests()"
+            />
+            <div id="interestGrid" class="grid" style="margin-top: 12px"></div>
+            <p class="muted" style="margin-top: 8px">
+              Select any number of interests. These will be used to map to
+              streams.
+            </p>
+            <div class="actions">
+              <button class="btn secondary" onclick="goTo(2)">Back</button>
+              <button class="btn" onclick="validateInterests()">Next</button>
+            </div>
+          </div>
+        </section>
+        <!-- STEP 4 -->
+        <section class="step-screen" id="screen-4" aria-hidden="true">
+          <h2>Step 3 — Your long-term career goals</h2>
+          <div class="card">
+            <label class="muted">Search careers</label>
+            <input
+              id="careerSearch"
+              type="text"
+              placeholder="e.g., software engineer, architect"
+            />
+            <div id="careerGrid" class="grid" style="margin-top: 12px"></div>
+            <div style="margin-top: 10px">
+              <button
+                id="seeMoreBtn"
+                class="btn secondary small"
+                onclick="toggleSeeMore()"
+                style="display: none"
+              >
+                See more
+              </button>
+            </div>
+            <div class="actions" style="margin-top: 12px">
+              <button class="btn secondary" onclick="goTo(3)">Back</button>
+              <button class="btn" onclick="validateCareerGoals()">Next</button>
+            </div>
+          </div>
+        </section>
+        <!-- STEP 5 -->
+        <section class="step-screen" id="screen-5" aria-hidden="true">
+          <h2>Step 4 — Recommended streams</h2>
+          <div class="card">
+            <p class="muted">
+              We compute compatibility using your 12th stream, subjects,
+              interests and career goals. Streams with match &gt; 50% are shown
+              as primary recommendations.
+            </p>
+            <div
+              id="streamList"
+              class="stream-list"
+              style="margin-top: 12px"
+            ></div>
+            <div class="actions" style="margin-top: 12px">
+              <button class="btn secondary" onclick="goTo(4)">Back</button>
+            </div>
+          </div>
+        </section>
+        <!-- STEP 6 -->
+        <section class="step-screen" id="screen-6" aria-hidden="true">
+          <h2>Stream overview</h2>
+          <div class="card" id="streamDetailsCard"></div>
+          <div class="actions">
+            <button class="btn secondary" onclick="goTo(5)">Back</button>
+            <button
+              class="btn"
+              id="confirmStreamBtn"
+              onclick="confirmSelectedStream()"
+            >
+              Confirm This Stream
+            </button>
+          </div>
+        </section>
+        <!-- STEP 7 -->
+        <section class="step-screen" id="screen-7" aria-hidden="true">
+          <h2>Personalized learning path</h2>
+          <div class="card" id="learningCard"></div>
+          <!-- Removed "Back to Recommendations" button per request -->
+          <div class="card" id="quizCard" style="display: none">
+            <h3>Quick comprehension quiz</h3>
+            <div id="quizArea" class="quiz"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <!-- Quiz Modal (INTEGRATED at correct place) -->
+    <div id="quizModal">
+      <div class="quiz-content" id="quizContent">
+        <!-- injected dynamically -->
+      </div>
+    </div>
+    <!-- Confetti canvas (unchanged) -->
+    <canvas
+      id="confettiCanvas"
+      style="
+        position: fixed;
+        left: 0;
+        top: 0;
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+      "
+    ></canvas>
+  </body>
+</html>
